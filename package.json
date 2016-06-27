@@ -1,0 +1,13 @@
+{
+	"name": "dokuwiki-tools",
+	"version": "0.1.1",
+	"description": "A toolset to manipulate and export DokuWiki pages",
+	"contributors": [{
+		"name": "Christian Paul",
+		"email": "foo.bar@example.com"
+	}],
+	"dependencies": {
+		"minimist": "*"
+	},
+	"license": "MIT"
+}

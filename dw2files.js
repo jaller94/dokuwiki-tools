@@ -23,13 +23,11 @@ function extractFiles(pagedata) {
 }
 
 
-// DEBUG
-process.argv.forEach(function (val, index, array) {
-	console.log(index + ': ' + val);
-});
+// Parse command line parameters
+var argv = require('minimist')(process.argv.slice(2));
 
-var inputfile = process.argv[2];
-var outputfolder = process.argv[3];
+var inputfile = String(argv._[0]);
+var outputfolder = String(argv._[1]);
 
 var content = fs.readFileSync(inputfile).toString();
 

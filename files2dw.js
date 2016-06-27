@@ -3,26 +3,23 @@
 const fs = require('fs');
 const path = require('path');
 
-// DEBUG
-process.argv.forEach(function (val, index, array) {
-	console.log(index + ': ' + val);
-});
+// Parse command line parameters
+var argv = require('minimist')(process.argv.slice(2));
 
-var inputfolder = process.argv[2];
-var outputfile = process.argv[3];
+var inputfolder = String(argv._[0]);
+var outputfile = String(argv._[1]);
+
+// Open file handler for the output page
+var output_filedescriptor = fs.openSync(path.resolve(outputfile),'w');
+
+// Add a page title
+if (argv.t || argv.title) {
+	var title = String(argv.t || argv.title).trim();
+	fs.writeFileSync(output_filedescriptor, '====== ' + title + ' ======\n');
+}
 
 var files = fs.readdirSync(inputfolder);
 
-console.log('outputfile: ' + path.resolve(outputfile));
-var output_filedescriptor = fs.openSync(path.resolve(outputfile),'w');
-
-var title = '';
-
-if (title) {
-	fs.writeFileSync(output_filedescriptor, '====== ' + title.trim() + ' ======\n');
-}
-
-var page = '';
 //files.forEach(function (val, index, array) {
 files.forEach(function (val, index, array) {
 	var file = {};
