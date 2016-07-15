@@ -1,6 +1,6 @@
 {
 	"name": "dokuwiki-tools",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "A toolset to manipulate and export DokuWiki pages",
 	"contributors": [{
 		"name": "Christian Paul",

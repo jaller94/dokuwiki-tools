@@ -1,37 +1,52 @@
 "use strict";
 
+function showHelp() { console.log(help); }
+const help = `=== USAGE ===
+dw2files <input file> <output folder>`
+
+
 const fs = require('fs');
 const path = require('path');
+const dwpage = require('./dokuwiki.module.js');
 
+const INFO = 1;
+const WARNING = 2;
+const ERROR = 3;
 
-function extractFiles(pagedata) {
-	// <(?<TAG>file|script)(?: ?\S* )?(?<FILENAME>.*?)>([\S\s]*?)<\/\1>
-	var regex = /<(file|script)(?: ?\S* )?(.*?)>([\S\s]*?)<\/\1>/g;
-
-	var files = [];
-
-	var val;
-	while ((val = regex.exec(content)) !== null) {
-		var item = {};
-		item.tag = val[1];
-		item.filename = val[2];
-		item.data = val[3].trim();
-		files.push( item );
-	}
-
-	return files;
-}
+var verbose = INFO;
 
 
 // Parse command line parameters
 var argv = require('minimist')(process.argv.slice(2));
 
-var inputfile = String(argv._[0]);
-var outputfolder = String(argv._[1]);
+if (typeof argv.h !== 'undefined' || typeof argv.help !== 'undefined') {
+	showHelp();
+	process.exit(0);
+}
 
+var inputfile = argv._[0];
+var outputfolder = argv._[1];
+
+// Test input command line parameter
+if (typeof inputfile === 'undefined') {
+	console.error('The essential source parameter is not set.\n');
+	showHelp();
+	process.exit(1);
+}
+inputfile = String(inputfile); // Convert (could be a string / number)
+
+// Test output command line parameter
+if (typeof outputfolder === 'undefined') {
+	outputfolder = './';
+}
+var outputfolder = String(outputfolder); // Convert (could be a string / number)
+
+// Open / Parse DokuWiki page (the input)
 var content = fs.readFileSync(inputfile).toString();
 
-var files = extractFiles(content);
+var page = new dwpage(content);
+
+var files = page.getFiles();
 
 // DEBUG
 //fs.writeFileSync(inputfile+".txt", JSON.stringify(files, null, "\t"));
@@ -51,6 +66,10 @@ if (!isfolder) {
 files.forEach(function (val, index, array) {
 	var filepath = path.resolve(outputfolder, val.filename);
 	fs.writeFile(filepath, val.data, (err) => {
-		if (err) console.error('Was not able to save ' + val.filename);
+		if (err) {
+			console.error('Was not able to save ' + val.filename);
+		} else {
+			if (verbose == INFO) console.log('File processed: ' + val.filename);
+		}
 	});
 });

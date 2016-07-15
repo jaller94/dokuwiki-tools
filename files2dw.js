@@ -1,5 +1,12 @@
 "use strict";
 
+function showHelp() { console.log(help); }
+const help = `=== USAGE ===
+files2dw [<options>] <input folder> <output file>
+  -t --title
+    title of the page`
+
+
 const fs = require('fs');
 const path = require('path');
 
@@ -27,9 +34,9 @@ files.forEach(function (val, index, array) {
 	file.path = path.resolve(inputfolder, file.name);
 	file.buffer = fs.readFileSync(file.path);
 
-	fs.writeSync(output_filedescriptor, '<script - ' + file.name + '>\n');
+	fs.writeSync(output_filedescriptor, '<code - ' + file.name + '>\n');
 	fs.writeSync(output_filedescriptor, file.buffer.toString());
-	fs.writeSync(output_filedescriptor, '\n</script>\n\n');
+	fs.writeSync(output_filedescriptor, '\n</code>\n\n');
 });
 
 fs.close(output_filedescriptor);
