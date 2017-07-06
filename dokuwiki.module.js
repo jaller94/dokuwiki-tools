@@ -41,7 +41,6 @@ class DokuWikiPage {
 
 	setTitle(title) {
 		this.content.replace(regex_title, '====== ' + title + ' ======');
-		return ();
 	}
 }
 

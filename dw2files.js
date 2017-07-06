@@ -2,7 +2,7 @@
 
 function showHelp() { console.log(help); }
 const help = `=== USAGE ===
-dw2files <input file> <output folder>`
+dw2files <input file> <output folder>`;
 
 
 const fs = require('fs');
@@ -24,6 +24,7 @@ if (typeof argv.h !== 'undefined' || typeof argv.help !== 'undefined') {
 	process.exit(0);
 }
 
+// Read command line parameters
 var inputfile = argv._[0];
 var outputfolder = argv._[1];
 
