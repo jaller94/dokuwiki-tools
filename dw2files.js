@@ -13,11 +13,11 @@ const INFO = 1;
 const WARNING = 2;
 const ERROR = 3;
 
-var verbose = INFO;
+const verbose = INFO;
 
 
 // Parse command line parameters
-var argv = require('minimist')(process.argv.slice(2));
+const argv = require('minimist')(process.argv.slice(2));
 
 if (typeof argv.h !== 'undefined' || typeof argv.help !== 'undefined') {
 	showHelp();
@@ -25,36 +25,36 @@ if (typeof argv.h !== 'undefined' || typeof argv.help !== 'undefined') {
 }
 
 // Read command line parameters
-var inputfile = argv._[0];
-var outputfolder = argv._[1];
+let inputFilePath = argv._[0];
+let outputFolderPath = argv._[1];
 
 // Test input command line parameter
-if (typeof inputfile === 'undefined') {
-	console.error('The essential source parameter is not set.\n');
+if (typeof inputFilePath === 'undefined') {
+	console.error('Required parameter missing: source file.\n');
 	showHelp();
 	process.exit(1);
 }
-inputfile = String(inputfile); // Convert (could be a string / number)
+inputFilePath = String(inputFilePath); // Convert (could be a string / number)
 
 // Test output command line parameter
-if (typeof outputfolder === 'undefined') {
-	outputfolder = './';
+if (typeof outputFolderPath === 'undefined') {
+	outputFolderPath = './';
 }
-var outputfolder = String(outputfolder); // Convert (could be a string / number)
+let outputFolderPath = String(outputFolderPath); // Convert (could be a string / number)
 
 // Open / Parse DokuWiki page (the input)
-var content = fs.readFileSync(inputfile).toString();
+let content = fs.readFileSync(inputFilePath).toString();
 
-var page = new dwpage(content);
+let page = new dwpage(content);
 
-var files = page.getFiles();
+let files = page.getFiles();
 
 // DEBUG
-//fs.writeFileSync(inputfile+".txt", JSON.stringify(files, null, "\t"));
+//fs.writeFileSync(inputFilePath+".txt", JSON.stringify(files, null, "\t"));
 
-var isfolder = false;
+let isfolder = false;
 try {
-	isfolder = fs.statSync(outputfolder).isDirectory();
+	isfolder = fs.statSync(outputFolderPath).isDirectory();
 } catch (err) {
 
 }
@@ -65,12 +65,12 @@ if (!isfolder) {
 }
 
 files.forEach(function (val, index, array) {
-	var filepath = path.resolve(outputfolder, val.filename);
+	let filepath = path.resolve(outputFolderPath, val.filename);
 	fs.writeFile(filepath, val.data, (err) => {
 		if (err) {
 			console.error('Was not able to save ' + val.filename);
 		} else {
-			if (verbose == INFO) console.log('File processed: ' + val.filename);
+			if (verbose === INFO) console.log('File processed: ' + val.filename);
 		}
 	});
 });
