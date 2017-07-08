@@ -40,7 +40,7 @@ inputFilePath = String(inputFilePath); // Convert (could be a string / number)
 if (typeof outputFolderPath === 'undefined') {
 	outputFolderPath = './';
 }
-let outputFolderPath = String(outputFolderPath); // Convert (could be a string / number)
+outputFolderPath = String(outputFolderPath); // Convert (could be a string / number)
 
 // Open / Parse DokuWiki page (the input)
 let content = fs.readFileSync(inputFilePath).toString();
